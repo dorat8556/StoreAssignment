@@ -2,16 +2,14 @@ package com.example.demo.jpa.entities;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 @Entity
 @Table(name = "users")
 @Data
+@Embeddable
 public class UserEntity {
     private @Id
     @GeneratedValue

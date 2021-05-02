@@ -21,8 +21,6 @@ public class ItemEntity {
 
     private Float price;
 
-
-
     public ItemEntity(String itemName, Float itemPrice) {
         this.name = itemName;
         this.price = itemPrice;

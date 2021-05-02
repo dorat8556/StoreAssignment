@@ -4,6 +4,7 @@ import com.example.demo.config.Status;
 import com.example.demo.jpa.entities.CatalogEntity;
 import com.example.demo.jpa.entities.ItemEntity;
 import com.example.demo.jpa.entities.StoreEntity;
+import com.example.demo.jpa.entities.UserEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,11 +21,13 @@ public class OwnerService {
     private final StoreService storeService;
     private final CatalogService catalogService;
     private final ItemService itemService;
+    private final UserService userService;
 
 
     public StoreEntity createNewStore(Long userId) {
         if (validateOwnerReqService.isAllowed(userId)) {
-            return storeService.createNewStore(userId);
+            Optional<UserEntity> userEntity = userService.getUserById(userId);
+            userEntity.ifPresent(storeService::createNewStore);
         }
         return null;
     }
@@ -75,6 +78,17 @@ public class OwnerService {
         if (validateOwnerReqService.isAllowed(userId) && isOneOfTheOwners(storeId, userId)) {
             catalogService.addItemToCatalog(itemIds, catalogId, storeId);
             return Status.SUCCESS;
+        }
+        return Status.FAILURE;
+    }
+
+    public Status addOwnerToStore(Long userId, Long storeId) {
+        if(validateOwnerReqService.isAllowed(userId)){
+            Optional<UserEntity> user = userService.getUserById(userId);
+            if(user.isPresent()){
+                storeService.addOwnerToStore(user.get(), storeId);
+                return Status.SUCCESS;
+            }
         }
         return Status.FAILURE;
     }

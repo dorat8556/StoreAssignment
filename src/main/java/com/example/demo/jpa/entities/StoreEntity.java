@@ -3,10 +3,9 @@ package com.example.demo.jpa.entities;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "stores")
@@ -17,10 +16,14 @@ public class StoreEntity {
     @GeneratedValue
     long id;
 
-    private Long ownerId;
+    @ElementCollection
+    private Set<UserEntity> ownerId = new HashSet<>();
 
-    public StoreEntity(Long userId) {
-        this.ownerId= userId;
+    public StoreEntity(UserEntity userId) {
+        this.ownerId.add(userId);
     }
 
+    public void addOwnerToStoreSet(UserEntity user) {
+        this.ownerId.add(user);
+    }
 }

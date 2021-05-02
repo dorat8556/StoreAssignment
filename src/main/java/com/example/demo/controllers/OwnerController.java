@@ -22,6 +22,11 @@ public class OwnerController {
     StoreEntity createNewStore(@RequestBody Long userId) {
         return ownerService.createNewStore(userId);
     }
+    //add Owner to store
+    @PostMapping("/add-owner-to-store")
+    Status addOwnerToStore(@RequestParam Long userId, Long storeId) {
+        return ownerService.addOwnerToStore(userId,storeId);
+    }
 
     // create/add new catalog to the store
     @PostMapping("/add-catalog")
